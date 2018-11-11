@@ -41,7 +41,7 @@ namespace RefactorTdd
 			else
 			{
 				DateTime currentMonth = new DateTime(start.Year, start.Month, 1);
-				double aggrAmount = 0;
+				double totalAmount = 0;
 				do
 				{
 					var budgetByMonth =
@@ -53,28 +53,28 @@ namespace RefactorTdd
 							var dailyAmount = AmountPerDayInMonth(budgetByMonth, start);
 							var intervalDays = (DateTime.DaysInMonth(start.Year, start.Month) - start.Day + 1);
 							
-							aggrAmount += dailyAmount * intervalDays;
+							totalAmount += dailyAmount * intervalDays;
 						}
 						else if (IsLastMonth(end, currentMonth))
 						{
 							var dailyAmount = AmountPerDayInMonth(budgetByMonth, end);
 							var intervalDays = end.Day;
 							
-							aggrAmount += dailyAmount * intervalDays;
+							totalAmount += dailyAmount * intervalDays;
 						}
 						else
 						{
 							var dailyAmount = AmountPerDayInMonth(budgetByMonth, currentMonth);
 							var intervalDays = DateTime.DaysInMonth(currentMonth.Year,currentMonth.Month);
 							
-							aggrAmount += dailyAmount * intervalDays;
+							totalAmount += dailyAmount * intervalDays;
 						}
 					}
 
 					currentMonth = currentMonth.AddMonths(1);
 				} while (currentMonth <= end);
 
-				return aggrAmount;
+				return totalAmount;
 			}
 		}
 
