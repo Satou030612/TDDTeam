@@ -33,7 +33,7 @@ namespace RefactorTdd
 					return 0;
 				}
 
-				var budgetPerDay = AmountPerDayInMonth(start, budget);
+				var budgetPerDay = DailyAmountOfBudget(start, budget);
 				var intervalDays = DaysInterval(start, end);
 				
 				return budgetPerDay * intervalDays;
@@ -76,7 +76,7 @@ namespace RefactorTdd
 			}
 		}
 
-		private static int AmountPerDayInMonth(DateTime start, Budget budget)
+		private static int DailyAmountOfBudget(DateTime start, Budget budget)
 		{
 			return budget.Amount / DateTime.DaysInMonth(start.Year, start.Month);
 		}
