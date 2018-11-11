@@ -38,25 +38,26 @@ namespace RefactorTdd
 			}
 			else
 			{
-				DateTime tempDate = new DateTime(start.Year, start.Month, 1);
+				DateTime currentMonth = new DateTime(start.Year, start.Month, 1);
 				double aggrAmount = 0;
 				do
 				{
 					var budgetByMonth =
-						budgets.SingleOrDefault(x => x.YearMonth.Equals(tempDate.ToString("yyyyMM")));
+						budgets.SingleOrDefault(x => x.YearMonth.Equals(currentMonth.ToString("yyyyMM")));
 					if (budgetByMonth != null)
 					{
-						if (IsFirstMonth(start, tempDate))
+						if (IsFirstMonth(start, currentMonth))
 							aggrAmount += AmountPerDayInMonth(budgetByMonth, start) *
 										  (DateTime.DaysInMonth(start.Year, start.Month) - start.Day + 1);
-						else if (IsLastMonth(end, tempDate))
+						else if (IsLastMonth(end, currentMonth))
 							aggrAmount += AmountPerDayInMonth(budgetByMonth, end) * end.Day;
 						else
-							aggrAmount += budgetByMonth.Amount;
+							aggrAmount += AmountPerDayInMonth(budgetByMonth, currentMonth) *
+							              DateTime.DaysInMonth(currentMonth.Year,currentMonth.Month);
 					}
 
-					tempDate = tempDate.AddMonths(1);
-				} while (tempDate <= end);
+					currentMonth = currentMonth.AddMonths(1);
+				} while (currentMonth <= end);
 
 				return aggrAmount;
 			}
