@@ -34,7 +34,9 @@ namespace RefactorTdd
 				}
 
 				var budgetPerDay = AmountPerDayInMonth(start, budget);
-				return budgetPerDay * DaysInterval(start, end);
+				var intervalDays = DaysInterval(start, end);
+				
+				return budgetPerDay * intervalDays;
 			}
 			else
 			{
@@ -47,13 +49,26 @@ namespace RefactorTdd
 					if (budgetByMonth != null)
 					{
 						if (IsFirstMonth(start, currentMonth))
-							aggrAmount += AmountPerDayInMonth(budgetByMonth, start) *
-										  (DateTime.DaysInMonth(start.Year, start.Month) - start.Day + 1);
+						{
+							var dailyAmount = AmountPerDayInMonth(budgetByMonth, start);
+							var intervalDays = (DateTime.DaysInMonth(start.Year, start.Month) - start.Day + 1);
+							
+							aggrAmount += dailyAmount * intervalDays;
+						}
 						else if (IsLastMonth(end, currentMonth))
-							aggrAmount += AmountPerDayInMonth(budgetByMonth, end) * end.Day;
+						{
+							var dailyAmount = AmountPerDayInMonth(budgetByMonth, end);
+							var intervalDays = end.Day;
+							
+							aggrAmount += dailyAmount * intervalDays;
+						}
 						else
-							aggrAmount += AmountPerDayInMonth(budgetByMonth, currentMonth) *
-							              DateTime.DaysInMonth(currentMonth.Year,currentMonth.Month);
+						{
+							var dailyAmount = AmountPerDayInMonth(budgetByMonth, currentMonth);
+							var intervalDays = DateTime.DaysInMonth(currentMonth.Year,currentMonth.Month);
+							
+							aggrAmount += dailyAmount * intervalDays;
+						}
 					}
 
 					currentMonth = currentMonth.AddMonths(1);
