@@ -33,7 +33,7 @@ namespace RefactorTdd
 					return 0;
 				}
 
-				var budgetPerDay = budget.Amount / DateTime.DaysInMonth(start.Year, start.Month);
+				var budgetPerDay = AmountPerDayInMonth(start, budget);
 				return budgetPerDay * DaysInterval(start, end);
 			}
 			else
@@ -46,10 +46,10 @@ namespace RefactorTdd
 						budgets.SingleOrDefault(x => x.YearMonth.Equals(tempDate.ToString("yyyyMM")));
 					if (budgetByMonth != null)
 					{
-						if (tempDate.ToString("yyyyMM") == start.ToString("yyyyMM"))
+						if (IsFirstMonth(start, tempDate))
 							aggrAmount += AmountPerDayInMonth(budgetByMonth, start) *
 										  (DateTime.DaysInMonth(start.Year, start.Month) - start.Day + 1);
-						else if (tempDate.ToString("yyyyMM") == end.ToString("yyyyMM"))
+						else if (IsLastMonth(end, tempDate))
 							aggrAmount += AmountPerDayInMonth(budgetByMonth, end) * end.Day;
 						else
 							aggrAmount += budgetByMonth.Amount;
@@ -60,6 +60,21 @@ namespace RefactorTdd
 
 				return aggrAmount;
 			}
+		}
+
+		private static int AmountPerDayInMonth(DateTime start, Budget budget)
+		{
+			return budget.Amount / DateTime.DaysInMonth(start.Year, start.Month);
+		}
+
+		private static bool IsLastMonth(DateTime end, DateTime tempDate)
+		{
+			return tempDate.ToString("yyyyMM") == end.ToString("yyyyMM");
+		}
+
+		private static bool IsFirstMonth(DateTime start, DateTime tempDate)
+		{
+			return tempDate.ToString("yyyyMM") == start.ToString("yyyyMM");
 		}
 
 		private static bool IsSameMonth(DateTime start, DateTime end)
